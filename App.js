@@ -1,113 +1,90 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, {useEffect, useState} from 'react';
+import {Text, View, StyleSheet, Animated, TouchableOpacity} from 'react-native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const App = () => {
+  const [visible, setVisible] = useState(false);
+  const [x, setX] = useState(new Animated.Value(600));
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  const start = () => {
+    if (!visible) {
+      Animated.timing(x, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(x, {
+        toValue: 600,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    }
 
-const App: () => React$Node = () => {
+    setVisible(!visible);
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      for (let i = 0; i < 1000; i++) {
+        console.log('JS thread is busy.');
+      }
+    }, 500);
+  }, []);
+
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.btn} onPress={() => start()}>
+        <Text style={styles.textBtn}>Start</Text>
+      </TouchableOpacity>
+      <Animated.View
+        style={{
+          transform: [{translateX: x}],
+          height: 250,
+          width: 200,
+          margin: 5,
+          borderRadius: 12,
+          backgroundColor: '#347a2a',
+          justifyContent: 'center',
+        }}>
+        <Text style={styles.text}>Fade </Text>
+      </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  item: {},
+  btn: {
+    backgroundColor: '#480032',
+    width: 100,
+    height: 40,
+    padding: 3,
+    justifyContent: 'center',
+    borderRadius: 6,
   },
-  body: {
-    backgroundColor: Colors.white,
+  text: {
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  item1: {
+    backgroundColor: 'red',
+    padding: 20,
+    width: 100,
+    margin: 10,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+
+  textBtn: {
+    color: '#f4f4f4',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
