@@ -1,90 +1,64 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Animated, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Button, StyleSheet, View} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
-const App = () => {
+function App() {
   const [visible, setVisible] = useState(false);
-  const [x, setX] = useState(new Animated.Value(600));
+  const x = useSharedValue(0);
 
-  const start = () => {
+  const style = useAnimatedStyle(() => {
+    /*return {
+      transform: [
+        {
+          translateX: withTiming(x.value, {
+            duration: 1000,
+            easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+          }),
+        },
+      ],
+    };*/
+    return {
+      width: withTiming(x.value, {
+        duration: 1000,
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      }),
+    };
+  });
+
+  const onPress = () => {
     if (!visible) {
-      Animated.timing(x, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+      x.value = 0;
     } else {
-      Animated.timing(x, {
-        toValue: 600,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+      x.value = 300;
     }
-
     setVisible(!visible);
   };
 
-  useEffect(() => {
-    setInterval(() => {
-      for (let i = 0; i < 1000; i++) {
-        console.log('JS thread is busy.');
-      }
-    }, 500);
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.btn} onPress={() => start()}>
-        <Text style={styles.textBtn}>Start</Text>
-      </TouchableOpacity>
-      <Animated.View
-        style={{
-          transform: [{translateX: x}],
-          height: 250,
-          width: 200,
-          margin: 5,
-          borderRadius: 12,
-          backgroundColor: '#347a2a',
-          justifyContent: 'center',
-        }}>
-        <Text style={styles.text}>Fade </Text>
-      </Animated.View>
+    <View>
+      <Animated.View style={[styles.box, style]} />
+      <Button onPress={() => onPress()} title="Hey" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
+  box: {
+    height: 100,
+    width: 100,
+    backgroundColor: 'green',
+  },
+  button: {
+    height: 50,
+    backgroundColor: 'blue',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  item: {},
-  btn: {
-    backgroundColor: '#480032',
-    width: 100,
-    height: 40,
-    padding: 3,
-    justifyContent: 'center',
-    borderRadius: 6,
-  },
-  text: {
-    fontSize: 20,
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  item1: {
-    backgroundColor: 'red',
-    padding: 20,
-    width: 100,
-    margin: 10,
-  },
-
-  textBtn: {
-    color: '#f4f4f4',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
 
