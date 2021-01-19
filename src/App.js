@@ -1,25 +1,11 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {withTranslation} from 'react-i18next';
-import i18next from './config/lang/i18n';
+import React, {useState} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
+import Overlay from './Example/Overlay';
 
 const App = () => {
-  return <Text>{i18next.t('hello')}</Text>;
+  return <Overlay />;
 };
 
-export default withTranslation()(App);
+const styles = StyleSheet.create({});
+
+export default App;
