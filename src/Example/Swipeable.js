@@ -8,15 +8,35 @@ const Swipeable = () => {
     openLarge: false,
   });
   const [isPanelActive, setIsPanelActive] = useState(true);
+  const [type, setType] = useState(0);
+
+  const getStatus = (status) => {
+    setType(status);
+  };
 
   return (
     <View style={{flex: 1}}>
       <Text>Welcome to React Native!</Text>
       <Text>To get started, edit App.js</Text>
-      <SwipeablePanel {...panelProps} isActive={isPanelActive}>
-        <View>
-          <Text>테스트 문구</Text>
-        </View>
+      <SwipeablePanel
+        {...panelProps}
+        isActive={isPanelActive}
+        getStatus={getStatus}>
+        {type === 1 && (
+          <View>
+            <Text>SMALL</Text>
+          </View>
+        )}
+        {type === 2 && (
+          <View>
+            <Text>LARGE</Text>
+          </View>
+        )}
+        {type === 3 && (
+          <View>
+            <Text>HIDDEN</Text>
+          </View>
+        )}
       </SwipeablePanel>
     </View>
   );
