@@ -1,8 +1,9 @@
 import React from 'react';
 import {Text} from 'react-native';
+import Swipeable from './Example/Swipeable';
 
 const App = () => {
-  return <Text>hello</Text>;
+  return <Swipeable />;
 };
 
 export default App;
